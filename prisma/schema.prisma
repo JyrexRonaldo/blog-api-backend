@@ -17,6 +17,7 @@ model User {
   id       Int       @id @default(autoincrement())
   username String    @unique
   password String
+  role     Role      @default(USER)
   posts    Post[]
   comments Comment[]
 }
@@ -27,6 +28,7 @@ model Post {
   post      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  status    Status   @default(UNPUBLISHED)
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
 }
@@ -38,4 +40,14 @@ model Comment {
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Status {
+  PUBLISHED
+  UNPUBLISHED
 }
