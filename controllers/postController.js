@@ -5,4 +5,14 @@ async function getAllPosts(req, res) {
   res.json(posts);
 }
 
-module.exports = { getAllPosts };
+async function getPostById(req, res) {
+  const { postId } = req.params;
+  const post = await prisma.post.findUnique({
+    where: {
+      id: +postId
+    }
+  })
+
+  res.json(post);
+}
+module.exports = { getAllPosts, getPostById };
