@@ -1,9 +1,12 @@
 require("dotenv").config;
 const express = require("express");
 const app = express();
+const postRouter = require("./routes/postRouter");
+const prisma = require("./config/prisma")
 
+app.use(express.urlencoded({ extended: true }));
 
-// app.use("/", indexRouter)
+app.use("/", postRouter)
 
 const PORT = process.env.PORT || 3000;
 
