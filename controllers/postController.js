@@ -46,7 +46,7 @@ async function updatePost(req, res) {
   const { postId } = req.params;
   await prisma.post.uodate({
     where: {
-      id: +postId
+      id: +postId,
     },
     data: {
       title,
@@ -55,6 +55,16 @@ async function updatePost(req, res) {
     },
   });
   res.json(req.body);
+}
+
+async function deletePost(req, res) {
+  const { postId } = req.params;
+  await prisma.post.delet({
+    where: {
+      id: +postId,
+    },
+  });
+  res.json({ deleted: postId });
 }
 
 async function createComment(req, res) {
@@ -75,4 +85,5 @@ module.exports = {
   getPostById,
   createComment,
   updatePost,
+  deletePost,
 };

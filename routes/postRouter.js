@@ -9,7 +9,8 @@ postRouter
 postRouter
   .route("/:postId")
   .get(postController.getPostById)
-  .put(postController.updatePost);
+  .put(postController.updatePost)
+  .delete(postController.deletePost);
 postRouter.route("/:postId/comment").post(postController.createComment);
 
 module.exports = postRouter;
