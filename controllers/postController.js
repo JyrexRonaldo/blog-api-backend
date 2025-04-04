@@ -1,8 +1,7 @@
 const prisma = require("../config/prisma");
 
 async function getAllPosts(req, res) {
-
-  console.log(req.headers, "line 5 postController")
+  console.log(req.headers, "line 5 postController");
   const posts = await prisma.post.findMany({
     include: {
       author: true,
@@ -31,7 +30,15 @@ async function getPostById(req, res) {
 }
 
 async function createComment(req, res) {
-    
+  const { comment, authorId, postId } = req.body;
+  await prisma.comment.create({
+    data: {
+      comment,
+      authorId,
+      postId,
+    },
+  });
+  res.json(req.body);
 }
 
-module.exports = { getAllPosts, getPostById };
+module.exports = { getAllPosts, getPostById, createComment };
