@@ -16,7 +16,7 @@ const postsData = Array.from({ length: 20 }).map((element, index) => {
   }
   element = {
     title: faker.lorem.sentence(),
-    post: faker.lorem.paragraph(),
+    body: faker.lorem.paragraph(),
     authorId,
   };
   return element;
