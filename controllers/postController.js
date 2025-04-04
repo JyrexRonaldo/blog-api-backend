@@ -41,6 +41,22 @@ async function getPostById(req, res) {
   res.json(post);
 }
 
+async function updatePost(req, res) {
+  const { title, body, authorId } = req.body;
+  const { postId } = req.params;
+  await prisma.post.uodate({
+    where: {
+      id: +postId
+    },
+    data: {
+      title,
+      body,
+      authorId,
+    },
+  });
+  res.json(req.body);
+}
+
 async function createComment(req, res) {
   const { comment, authorId, postId } = req.body;
   await prisma.comment.create({
@@ -53,4 +69,10 @@ async function createComment(req, res) {
   res.json(req.body);
 }
 
-module.exports = { createPost, getAllPosts, getPostById, createComment };
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  createComment,
+  updatePost,
+};
