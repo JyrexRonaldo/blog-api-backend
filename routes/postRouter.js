@@ -11,6 +11,13 @@ postRouter
   .get(postController.getPostById)
   .put(postController.updatePost)
   .delete(postController.deletePost);
-postRouter.route("/:postId/comment").post(postController.createComment);
+postRouter
+  .route("/:postId/comments")
+  .post(postController.createComment)
+  .put(postController.updateComment);
+
+  postRouter
+  .route("/:postId/comments/commentId")
+  .put(postController.updateComment);
 
 module.exports = postRouter;
