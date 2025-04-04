@@ -14,10 +14,10 @@ postRouter
 postRouter
   .route("/:postId/comments")
   .post(postController.createComment)
-  .put(postController.updateComment);
 
-  postRouter
+postRouter
   .route("/:postId/comments/commentId")
-  .put(postController.updateComment);
+  .put(postController.updateComment)
+  .delete(postController.deleteComment);
 
 module.exports = postRouter;

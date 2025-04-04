@@ -59,7 +59,7 @@ async function updatePost(req, res) {
 
 async function deletePost(req, res) {
   const { postId } = req.params;
-  await prisma.post.delet({
+  await prisma.post.delete({
     where: {
       id: +postId,
     },
@@ -95,6 +95,16 @@ async function updateComment(params) {
   res.json(req.body);
 }
 
+async function deleteComment(req, res) {
+  const { commentId } = req.params;
+  await prisma.comment.delete({
+    where: {
+      id: +commentId,
+    },
+  });
+  res.json({ deleted: commentId });
+}
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -103,4 +113,5 @@ module.exports = {
   deletePost,
   createComment,
   updateComment,
+  deleteComment,
 };
