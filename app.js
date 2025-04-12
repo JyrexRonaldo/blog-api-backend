@@ -3,8 +3,9 @@ const express = require("express");
 const app = express();
 const postRouter = require("./routes/postRouter");
 const authRouter = require("./routes/authRouter");
-const prisma = require("./config/prisma");
+const cors = require("cors")
 
+app.use(cors())
 
 app.use(express.urlencoded({ extended: true }));
 
