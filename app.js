@@ -5,9 +5,11 @@ const postRouter = require("./routes/postRouter");
 const authRouter = require("./routes/authRouter");
 const cors = require("cors")
 
-app.use(cors())
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.use(cors())
 
 app.use("/auth", authRouter);
 app.use("/", postRouter);

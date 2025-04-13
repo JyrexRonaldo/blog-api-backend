@@ -13,7 +13,6 @@ async function createPost(req, res) {
 }
 
 async function getAllPosts(req, res) {
-  console.log(req.headers, "line 5 postController");
   const posts = await prisma.post.findMany({
     include: {
       author: true,
