@@ -14,6 +14,7 @@ postRouter
 postRouter
   .route("/:postId/comments")
   .post(postController.createComment)
+  .get(postController.getCommentsByPostId)
 
 postRouter
   .route("/:postId/comments/commentId")

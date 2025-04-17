@@ -78,6 +78,16 @@ async function createComment(req, res) {
   res.json(req.body);
 }
 
+async function getCommentsByPostId(req, res) {
+  const { postId } = req.params;
+  const comments = await prisma.comment.findMany({
+    where: {
+      postId: +postId,
+    },
+  });
+  res.json(comments);
+}
+
 async function updateComment(params) {
   const { comment, authorId, postId } = req.body;
   const { commentId } = req.params;
@@ -113,4 +123,5 @@ module.exports = {
   createComment,
   updateComment,
   deleteComment,
+  getCommentsByPostId,
 };
