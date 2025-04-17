@@ -34,7 +34,16 @@ async function getPostById(req, res) {
       id: +postId,
     },
     include: {
-      comments: true,
+      author : {
+        select: {
+          username: true
+        }
+      },
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
   });
   res.json(post);
