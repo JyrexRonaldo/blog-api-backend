@@ -84,6 +84,13 @@ async function getCommentsByPostId(req, res) {
     where: {
       postId: +postId,
     },
+    include: {
+      author: {
+        select: {
+          username: true,
+        },
+      },
+    },
   });
   res.json(comments);
 }
