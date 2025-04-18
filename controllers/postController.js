@@ -105,15 +105,16 @@ async function getCommentsByPostId(req, res) {
 }
 
 async function updateComment(req,res) {
-  const { comment, authorId, postId, commentId } = req.body;
+  const { comment, authorId  } = req.body;
+  const { postId, commentId } = req.params;
   await prisma.comment.update({
     where: {
-      id: commentId,
+      id: +commentId,
     },
     data: {
       comment,
-      authorId,
-      postId,
+      authorId: +authorId,
+      postId: +postId,
     },
   });
   res.json(req.body);
