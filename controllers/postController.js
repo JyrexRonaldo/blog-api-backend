@@ -80,8 +80,8 @@ async function createComment(req, res) {
   await prisma.comment.create({
     data: {
       comment,
-      authorId,
-      postId,
+      authorId: +authorId,
+      postId: +postId,
     },
   });
   res.json(req.body);
@@ -104,9 +104,8 @@ async function getCommentsByPostId(req, res) {
   res.json(comments);
 }
 
-async function updateComment(params) {
-  const { comment, authorId, postId } = req.body;
-  const { commentId } = req.params;
+async function updateComment(req,res) {
+  const { comment, authorId, postId, commentId } = req.body;
   await prisma.comment.update({
     where: {
       id: commentId,
@@ -121,7 +120,7 @@ async function updateComment(params) {
 }
 
 async function deleteComment(req, res) {
-  const { commentId } = req.params;
+  const { commentId } = req.body;
   await prisma.comment.delete({
     where: {
       id: +commentId,

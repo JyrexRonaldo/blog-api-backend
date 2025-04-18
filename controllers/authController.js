@@ -12,12 +12,11 @@ async function createUser(req, res) {
       password: hashedPassword,
     },
   });
-  res.json(req.body);
+  res.json("Registration successful! You can now login.");
 }
 
 async function handleLogIn(req, res) {
   const { username, password } = req.body;
-
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -43,6 +42,7 @@ async function handleLogIn(req, res) {
     return res.status(200).json({
       message: "Auth Passed",
       token,
+      userId: user.id,
     });
   } catch (err) {
     return res.status(401).json({ message: "User not found" });

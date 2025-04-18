@@ -17,7 +17,7 @@ postRouter
   .get(postController.getCommentsByPostId)
 
 postRouter
-  .route("/:postId/comments/commentId")
+  .route("/:postId/comments/:commentId")
   .put(postController.updateComment)
   .delete(postController.deleteComment);
 
