@@ -1,12 +1,15 @@
 const prisma = require("../config/prisma");
+const { Status } = require("@prisma/client")
 
 async function createPost(req, res) {
-  const { title, body, authorId } = req.body;
+  const { title, body, authorId, status } = req.body;
+  const postStatus = status === 'PUBLISHED' ?  Status.PUBLISHED : Status.UNPUBLISHED
   await prisma.post.create({
     data: {
       title,
       body,
-      authorId,
+      authorId: +authorId,
+      status: postStatus,
     },
   });
   res.json(req.body);
@@ -34,10 +37,10 @@ async function getPostById(req, res) {
       id: +postId,
     },
     include: {
-      author : {
+      author: {
         select: {
-          username: true
-        }
+          username: true,
+        },
       },
       _count: {
         select: {
@@ -104,8 +107,8 @@ async function getCommentsByPostId(req, res) {
   res.json(comments);
 }
 
-async function updateComment(req,res) {
-  const { comment, authorId  } = req.body;
+async function updateComment(req, res) {
+  const { comment, authorId } = req.body;
   const { postId, commentId } = req.params;
   await prisma.comment.update({
     where: {
