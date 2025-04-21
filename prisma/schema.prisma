@@ -35,10 +35,9 @@ model Post {
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        String      @id 
   comment   String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
