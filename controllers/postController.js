@@ -1,9 +1,10 @@
 const prisma = require("../config/prisma");
-const { Status } = require("@prisma/client")
+const { Status } = require("@prisma/client");
 
 async function createPost(req, res) {
   const { title, body, authorId, status } = req.body;
-  const postStatus = status === 'PUBLISHED' ?  Status.PUBLISHED : Status.UNPUBLISHED
+  const postStatus =
+    status === "PUBLISHED" ? Status.PUBLISHED : Status.UNPUBLISHED;
   await prisma.post.create({
     data: {
       title,
@@ -79,15 +80,24 @@ async function deletePost(req, res) {
 }
 
 async function createComment(req, res) {
-  const { comment, authorId, postId } = req.body;
+  const { id, comment, authorId, postId } = req.body;
+  const commentData = {
+    id: id,
+    comment,
+    authorId: +authorId,
+    postId: +postId,
+    createdAt: new Date(),
+  }
   await prisma.comment.create({
-    data: {
-      comment,
-      authorId: +authorId,
-      postId: +postId,
-    },
+    data: commentData,
   });
-  res.json(req.body);
+  const savedData = await prisma.comment.findUnique({
+    where: {
+      id: commentData.id
+    }
+  })
+  console.log(savedData)
+  res.status(201).json(savedData);
 }
 
 async function getCommentsByPostId(req, res) {
