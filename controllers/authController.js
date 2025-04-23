@@ -35,14 +35,19 @@ async function handleLogIn(req, res) {
       return res.status(401).json({ message: "user not authorized" });
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     return res.status(200).json({
       message: "Auth Passed",
       token,
       userId: user.id,
+      userRole: user.role,
     });
   } catch (err) {
     return res.status(401).json({ message: "User not found" });
