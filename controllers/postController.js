@@ -1,16 +1,13 @@
 const prisma = require("../config/prisma");
-const { Status } = require("@prisma/client");
 
 async function createPost(req, res) {
   const { title, body, authorId, status } = req.body;
-  const postStatus =
-    status === "PUBLISHED" ? Status.PUBLISHED : Status.UNPUBLISHED;
   await prisma.post.create({
     data: {
       title,
       body,
       authorId: +authorId,
-      status: postStatus,
+      status: Boolean(status),
     },
   });
   res.json(req.body);
@@ -54,16 +51,17 @@ async function getPostById(req, res) {
 }
 
 async function updatePost(req, res) {
-  const { title, body, authorId } = req.body;
+  const { title, body, authorId, status } = req.body;
   const { postId } = req.params;
-  await prisma.post.uodate({
+  await prisma.post.update({
     where: {
       id: +postId,
     },
     data: {
       title,
       body,
-      authorId,
+      authorId: authorId,
+      status: status,
     },
   });
   res.json(req.body);
