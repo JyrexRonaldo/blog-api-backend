@@ -11,13 +11,19 @@ const usersData = Array.from({ length: 10 }).map((element, index) => {
 
 const postsData = Array.from({ length: 20 }).map((element, index) => {
   let authorId = index + 1;
+  let status = false
   if (authorId > 10) {
     authorId -= 10;
   }
+  if (authorId % 2 === 0) {
+    status = true
+  }
+
   element = {
     title: faker.lorem.sentence(),
     body: faker.lorem.paragraph(),
     authorId,
+    status
   };
   return element;
 });
