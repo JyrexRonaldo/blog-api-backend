@@ -4,7 +4,7 @@ const postController = require("../controllers/postController");
 
 postRouter
   .route("/")
-  .get(postController.getAllPosts)
+  .get(postController.getAllPublishedPosts)
   .post(postController.createPost);
 postRouter
   .route("/:postId")

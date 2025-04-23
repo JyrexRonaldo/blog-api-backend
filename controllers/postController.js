@@ -28,6 +28,24 @@ async function getAllPosts(req, res) {
   res.json(posts);
 }
 
+async function getAllPublishedPosts(req, res) {
+  const posts = await prisma.post.findMany({
+    where: {
+      status: true,
+    },
+    include: {
+      author: true,
+      comments: true,
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+  });
+  res.json(posts);
+}
+
 async function getPostById(req, res) {
   const { postId } = req.params;
   const post = await prisma.post.findUnique({
@@ -136,6 +154,7 @@ async function deleteComment(req, res) {
 module.exports = {
   createPost,
   getAllPosts,
+  getAllPublishedPosts,
   getPostById,
   updatePost,
   deletePost,
