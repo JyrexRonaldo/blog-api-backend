@@ -27,6 +27,11 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/", postRouter);
+app.use((err, req, res, next) => {
+  console.error(err);
+  // You will see an OH NO! in the page, with a status code of 500 that can be seen in the network tab of the dev tools
+  res.status(500).json(err.message);
+});
 
 const PORT = process.env.PORT || 3000;
 

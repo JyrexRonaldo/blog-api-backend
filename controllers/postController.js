@@ -1,6 +1,7 @@
 const prisma = require("../config/prisma");
+const asyncHandler = require("express-async-handler");
 
-async function createPost(req, res) {
+const createPost = asyncHandler(async (req, res) => {
   const { title, body, authorId, status } = req.body;
   await prisma.post.create({
     data: {
@@ -11,9 +12,9 @@ async function createPost(req, res) {
     },
   });
   res.json(req.body);
-}
+});
 
-async function getAllPosts(req, res) {
+const getAllPosts = asyncHandler(async (req, res) => {
   const posts = await prisma.post.findMany({
     include: {
       author: true,
@@ -26,9 +27,9 @@ async function getAllPosts(req, res) {
     },
   });
   res.json(posts);
-}
+});
 
-async function getAllPublishedPosts(req, res) {
+const getAllPublishedPosts = asyncHandler(async (req, res) => {
   const posts = await prisma.post.findMany({
     where: {
       status: true,
@@ -44,9 +45,9 @@ async function getAllPublishedPosts(req, res) {
     },
   });
   res.json(posts);
-}
+});
 
-async function getPostById(req, res) {
+const getPostById = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const post = await prisma.post.findUnique({
     where: {
@@ -66,9 +67,9 @@ async function getPostById(req, res) {
     },
   });
   res.json(post);
-}
+});
 
-async function updatePost(req, res) {
+const updatePost = asyncHandler(async (req, res) => {
   const { title, body, authorId, status } = req.body;
   const { postId } = req.params;
   await prisma.post.update({
@@ -83,9 +84,9 @@ async function updatePost(req, res) {
     },
   });
   res.json(req.body);
-}
+});
 
-async function deletePost(req, res) {
+const deletePost = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   await prisma.post.delete({
     where: {
@@ -93,9 +94,9 @@ async function deletePost(req, res) {
     },
   });
   res.json({ deleted: postId });
-}
+});
 
-async function createComment(req, res) {
+const createComment = asyncHandler(async (req, res) => {
   const { comment, authorId, postId } = req.body;
   await prisma.comment.create({
     data: {
@@ -105,9 +106,9 @@ async function createComment(req, res) {
     },
   });
   res.json(req.body);
-}
+});
 
-async function getCommentsByPostId(req, res) {
+const getCommentsByPostId = asyncHandler(async (req, res) => {
   const { postId } = req.params;
   const comments = await prisma.comment.findMany({
     where: {
@@ -123,9 +124,9 @@ async function getCommentsByPostId(req, res) {
     },
   });
   res.json(comments);
-}
+});
 
-async function updateComment(req, res) {
+const updateComment = asyncHandler(async (req, res) => {
   const { comment, authorId } = req.body;
   const { postId, commentId } = req.params;
   await prisma.comment.update({
@@ -139,9 +140,9 @@ async function updateComment(req, res) {
     },
   });
   res.json(req.body);
-}
+});
 
-async function deleteComment(req, res) {
+const deleteComment = asyncHandler(async (req, res) => {
   const { commentId } = req.body;
   await prisma.comment.delete({
     where: {
@@ -149,7 +150,7 @@ async function deleteComment(req, res) {
     },
   });
   res.json({ deleted: commentId });
-}
+});
 
 module.exports = {
   createPost,
