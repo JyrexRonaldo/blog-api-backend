@@ -79,8 +79,8 @@ const updatePost = asyncHandler(async (req, res) => {
     data: {
       title,
       body,
-      authorId: authorId,
-      status: status,
+      authorId: +authorId,
+      status: Boolean(status),
     },
   });
   res.json(req.body);

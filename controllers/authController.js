@@ -2,8 +2,9 @@ const prisma = require("../config/prisma");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("../config/passport");
+const asyncHandler = require("express-async-handler");
 
-async function createUser(req, res) {
+const createUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   await prisma.user.create({
@@ -13,46 +14,43 @@ async function createUser(req, res) {
     },
   });
   res.json("Registration successful! You can now login.");
-}
+});
 
-async function handleLogIn(req, res) {
+const handleLogIn = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        username,
-      },
-    });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
 
-    const match = await bcrypt.compare(password, user.password);
-
-    if (!match) {
-      // passwords do not match!
-      return res.status(401).json({ message: "user not authorized" });
-    }
-
-    const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    return res.status(200).json({
-      message: "Auth Passed",
-      token,
-      userId: user.id,
-      userRole: user.role,
-    });
-  } catch (err) {
-    return res.status(401).json({ errorMessage: err });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
   }
-}
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    // passwords do not match!
+    return res.status(401).json({ message: "Wrong Password!!!" });
+  }
+
+  const token = jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET_KEY,
+    {
+      expiresIn: "1d",
+    }
+  );
+
+  return res.status(200).json({
+    message: "Auth Passed",
+    token,
+    userId: user.id,
+    userRole: user.role,
+  });
+});
 
 const authenticateUser = passport.authenticate("jwt", { session: false });
 
