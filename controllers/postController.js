@@ -71,7 +71,7 @@ const getPostById = asyncHandler(async (req, res) => {
 });
 
 const updatePost = asyncHandler(async (req, res) => {
-  const { title, body, authorId, status } = req.body;
+  const { title, body, status } = req.body;
   const { postId } = req.params;
   const publishStatus = status === "true" ? true : false;
   const data = await prisma.post.update({
@@ -81,7 +81,6 @@ const updatePost = asyncHandler(async (req, res) => {
     data: {
       title,
       body,
-      authorId: +authorId,
       status: publishStatus,
     },
   });
