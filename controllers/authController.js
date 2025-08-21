@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const passport = require("../config/passport");
 const asyncHandler = require("express-async-handler");
 
-const createUser = asyncHandler(async (req, res) => {
+const createUser = asyncHandler(async (req, res, next) => {
   const { username, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
   await prisma.user.create({
@@ -13,7 +13,8 @@ const createUser = asyncHandler(async (req, res) => {
       password: hashedPassword,
     },
   });
-  res.json("Registration successful! You can now login.");
+  // res.json("Registration successful! You can now login.");
+  next();
 });
 
 const handleLogIn = asyncHandler(async (req, res) => {
