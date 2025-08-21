@@ -3,15 +3,16 @@ const asyncHandler = require("express-async-handler");
 
 const createPost = asyncHandler(async (req, res) => {
   const { title, body, authorId, status } = req.body;
-  await prisma.post.create({
+    const publishStatus = status === "true" ? true : false;
+  const data = await prisma.post.create({
     data: {
       title,
       body,
       authorId: +authorId,
-      status: Boolean(status),
+      status: publishStatus,
     },
   });
-  res.json(req.body);
+  res.json(data);
 });
 
 const getAllPosts = asyncHandler(async (req, res) => {
@@ -72,7 +73,8 @@ const getPostById = asyncHandler(async (req, res) => {
 const updatePost = asyncHandler(async (req, res) => {
   const { title, body, authorId, status } = req.body;
   const { postId } = req.params;
-  await prisma.post.update({
+  const publishStatus = status === "true" ? true : false;
+  const data = await prisma.post.update({
     where: {
       id: +postId,
     },
@@ -80,10 +82,10 @@ const updatePost = asyncHandler(async (req, res) => {
       title,
       body,
       authorId: +authorId,
-      status: Boolean(status),
+      status: publishStatus,
     },
   });
-  res.json(req.body);
+  res.json(data);
 });
 
 const deletePost = asyncHandler(async (req, res) => {
